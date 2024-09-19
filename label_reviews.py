@@ -14,10 +14,8 @@ Step 1
 !pip install datasets
 !pip install torch
 !pip install pandas
-!pip install scikit-learn  # Correct package name
+!pip install scikit-learn  
 !pip install tqdm
-
-# Install the compatible version of pyarrow to avoid conflicts
 !pip install pyarrow==14.0.1
 
 """Step 2
@@ -85,7 +83,7 @@ training_args = TrainingArguments(
     weight_decay=0.01,
     logging_dir='./logs',
     logging_steps=10,
-    eval_strategy="epoch",  # Use 'eval_strategy' instead of 'evaluation_strategy'
+    eval_strategy="epoch", 
 )
 
 # Define the Trainer
