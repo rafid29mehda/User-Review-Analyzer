@@ -103,8 +103,8 @@ from huggingface_hub import HfApi
 # Upload the entire directory to Hugging Face
 api = HfApi()
 api.upload_folder(
-    folder_path='./fin_review_model',  # Path to the folder with the model and tokenizer files
-    repo_id='RafidMehda/fin_review_model',  # Your model repository on Hugging Face
+    folder_path='./fin_review_model',  
+    repo_id='RafidMehda/fin_review_model',  
     repo_type='model'
 )
 
