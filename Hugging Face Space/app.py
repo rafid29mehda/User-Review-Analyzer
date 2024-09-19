@@ -3,7 +3,7 @@ import pandas as pd
 from transformers import pipeline
 
 # Load the fine-tuned model from Hugging Face
-model_path = "RafidMehda/fin_review_model"  # Your Hugging Face model repository path
+model_path = "RafidMehda/fin_review_model"  
 classifier = pipeline("text-classification", model=model_path, tokenizer=model_path)
 
 # Mapping the labels to more meaningful names
