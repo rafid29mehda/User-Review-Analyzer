@@ -1,4 +1,4 @@
-Yes, the current code can serve as a strong starting point for implementing **Hierarchical Attention Networks (HAN)** with **DistilBERT** and **Doc2Vec** embeddings. However, some modifications are needed to achieve the hierarchical architecture and the attention mechanisms required by HAN.
+Final merged doc2vec and distilBERT code can serve as a strong starting point for implementing **Hierarchical Attention Networks (HAN)** with **DistilBERT** and **Doc2Vec** embeddings. However, some modifications are needed to achieve the hierarchical architecture and the attention mechanisms required by HAN.
 
 Here’s a high-level outline of how you can modify the current code to implement HAN:
 
