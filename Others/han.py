@@ -29,8 +29,8 @@ from google.colab import files
 # Upload the file
 uploaded = files.upload()
 
-# Assuming the uploaded file is named 'reviews.csv'
-df = pd.read_csv(next(iter(uploaded)))  # Load the uploaded CSV into a DataFrame
+# Load the uploaded CSV into a DataFrame
+df = pd.read_csv(next(iter(uploaded)))  
 
 # Map 'RequirementType' to 'labels' (Functional: 1, Non-Functional: 0)
 label_mapping = {'F': 1, 'NF': 0}
