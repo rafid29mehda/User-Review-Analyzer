@@ -110,7 +110,7 @@ class CombinedEmbeddingClassifier(nn.Module):
         x = self.fc3(x)
         return x
 
-# Instantiate the classifier model
+# Instantiate the classifier models
 input_dim = X_reduced.shape[1]  # The size of the combined embeddings (after PCA)
 num_labels = 2  # We have two labels: Functional and Non-Functional
 model = CombinedEmbeddingClassifier(input_dim=input_dim, num_labels=num_labels)
