@@ -151,3 +151,39 @@ def get_predictions_and_evaluate(X, y, dataset_name):
 get_predictions_and_evaluate(X_train, y_train, "Training Set")
 get_predictions_and_evaluate(X_val, y_val, "Validation Set")
 get_predictions_and_evaluate(X_test, y_test, "Test Set")
+
+
+
+import os
+
+# Create the directory if it doesn't exist
+os.makedirs('./han_model', exist_ok=True)
+
+
+import joblib
+joblib.dump(xgb_model, './han_model/xgb_model.joblib')
+
+import os
+
+os.makedirs('./han_model', exist_ok=True)
+torch.save(sentence_attention.state_dict(), './han_model/sentence_attention.pt')
+
+
+tokenizer.save_pretrained('./han_model')
+
+
+!pip install huggingface_hub
+from huggingface_hub import notebook_login
+notebook_login()
+
+
+from huggingface_hub import HfApi
+
+api = HfApi()
+
+# Upload the model and tokenizer files
+api.upload_folder(
+    folder_path='./han_model',  # Path to the folder containing model and tokenizer files
+    repo_id='RafidMehda/han_model',  # Replace with your Hugging Face repo name
+    repo_type='model'
+)
