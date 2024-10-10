@@ -1,4 +1,46 @@
+In this project, a **Bi-directional Long Short-Term Memory (Bi-LSTM)** network was used to classify requirements as **Functional (F)** or **Non-Functional (NF)** based on text descriptions. Here's a comprehensive overview of how the Bi-LSTM was used and why it was chosen for this task:
 
+### 1. **Why Bi-LSTM for Text Classification?**
+
+The Bi-LSTM model was chosen because:
+- **LSTMs** are well-suited for sequential data like text, as they can capture dependencies over long sequences, making them effective for understanding the context within documents.
+- **Bi-directional** LSTMs process data in both forward and backward directions, allowing the model to consider both past and future context simultaneously. This is particularly valuable for text, as understanding a word often requires information from both before and after the word in a sentence.
+
+### 2. **Input Preparation**
+
+To leverage Bi-LSTM effectively, embeddings were created that encode the semantic meaning of the text:
+- **Doc2Vec** embeddings were used to provide a high-level, document-level representation of each requirement, capturing overall topic and meaning.
+- **DistilBERT** sentence embeddings with an **Attention** mechanism were applied to capture the nuances at the sentence level. This attention mechanism helped the model focus on the most important sentences within each document.
+- The resulting embeddings from both models were concatenated, resulting in rich feature vectors that combine document-level and sentence-level context.
+
+### 3. **Bi-LSTM Architecture and Configuration**
+
+The Bi-LSTM model used in this project had:
+- **Two LSTM Layers**: This provided the model with additional depth, enabling it to learn more complex patterns from the text data.
+- **Bidirectionality**: Allowed the model to process information in both directions along the sequence, improving its ability to capture contextual dependencies that can span across sentences.
+- **Dropout Layer**: Used for regularization to prevent overfitting by randomly setting some units to zero during training. A small dropout probability of 0.1 helped the model generalize well without losing too much information.
+- **Fully Connected Output Layer**: Mapped the output of the LSTM to the two possible classes (Functional and Non-Functional) with a `LogSoftmax` activation to produce log-probabilities.
+
+### 4. **Training with Regularization and Early Stopping**
+
+- **L2 Regularization** (via `weight_decay` in the optimizer) penalized large weights, encouraging the model to avoid overfitting by keeping weights small.
+- **Early Stopping** ensured that training stopped once the model performance plateaued on the validation set, preventing overfitting and saving computational resources.
+
+### 5. **Bi-LSTM’s Role in the Classification Pipeline**
+
+Here’s how the Bi-LSTM was integrated into the classification pipeline:
+1. **Data Preparation**: Sentences were converted into embeddings using Doc2Vec and DistilBERT with Attention. These embeddings were combined into a single feature vector for each document.
+2. **Bi-LSTM Processing**: The combined embeddings were fed into the Bi-LSTM, which learned to capture patterns and relationships within the text data, leveraging both past and future contexts.
+3. **Classification**: The output from the Bi-LSTM was passed through a fully connected layer to produce log-probabilities for each class (Functional vs. Non-Functional).
+4. **Evaluation**: Predictions were made based on the highest probability, and the model was evaluated for accuracy on the training, validation, and test datasets.
+
+### 6. **Benefits of Using Bi-LSTM in This Project**
+
+- **Contextual Understanding**: The Bi-LSTM’s ability to consider both directions in the sequence helped capture contextual dependencies, which are crucial for accurately classifying requirements.
+- **Effective for Sequential Data**: The nature of text as sequential data made Bi-LSTM a good fit, as it retains the order of words and the flow of information, which is essential for understanding the nuances in requirements.
+- **Improved Accuracy**: The combination of bidirectionality, attention-enhanced embeddings, and regularization techniques helped the model achieve high accuracy, making it a powerful tool for this classification task.
+
+By using a Bi-LSTM, the model was able to leverage sophisticated textual representations and capture relationships within the sequences, leading to an effective solution for classifying Functional vs. Non-Functional requirements.
 ### Summary of Modifications and Changes
 
 1. **Model Complexity and Structure**:
