@@ -1,5 +1,8 @@
 In this project, a **Bi-directional Long Short-Term Memory (Bi-LSTM)** network was used to classify requirements as **Functional (F)** or **Non-Functional (NF)** based on text descriptions. Here's a comprehensive overview of how the Bi-LSTM was used and why it was chosen for this task:
 
+![image](https://github.com/user-attachments/assets/3c3fea4d-980b-43d4-99d8-02089aa86623)
+
+
 ### 1. **Why Bi-LSTM for Text Classification?**
 
 The Bi-LSTM model was chosen because:
