@@ -9,7 +9,7 @@ The primary goal of your project was to develop a hybrid NLP model capable of ac
 
 ### **Methodology**
 
-Your approach involved several key steps:
+The approach involved several key steps:
 
 1. **Data Preparation and Labeling**
 
