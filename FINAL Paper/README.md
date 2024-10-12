@@ -5,7 +5,7 @@
 
 ### **Objective**
 
-The primary goal of your project was to develop a hybrid NLP model capable of accurately classifying user reviews into **Functional (F)** and **Non-Functional (NF)** categories. This classification is crucial for understanding user feedback, improving products, and enhancing customer satisfaction.
+The primary goal of the project is to develop a hybrid NLP model capable of accurately classifying user reviews into **Functional (F)** and **Non-Functional (NF)** categories. This classification is crucial for understanding user feedback, improving products, and enhancing customer satisfaction.
 
 ### **Methodology**
 
