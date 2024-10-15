@@ -1,54 +1,68 @@
-![Uploading Bi-lstm.jpg…]()
+![Bi-lstm2](https://github.com/user-attachments/assets/aa7dd551-bf47-4d00-998a-e679b9a76640)
 
 
+The image you provided is a diagram illustrating a Bi-LSTM (Bidirectional Long Short-Term Memory) based classification model. The diagram has a structure representing the flow of data from an Input Layer down through different computational and processing stages until reaching the final classification step. Let’s break down the components and the flow step by step:
 
-Let me provide a detailed breakdown of the Bi-LSTM classifier architecture based on the image.
+### **1. Input Layer (Document D)**
+- **Document (D)** is the input to the system.
+- The document is divided into individual sentences: \( S_1, S_2, \ldots, S_n \).
+- Each **Sentence (S)** is further tokenized into words: \( W(t-1), W(t), W(t+1) \). Each of these words is passed as a time step input to subsequent layers.
 
-### Layers of the Bi-LSTM Architecture
-
-#### 1. **Input Layer**
-- The **input layer** consists of a sequence of input vectors (`X(t-1)`, `X(t)`, `X(t+1)`).
-- Each input represents the hybrid embeddings that combine **Doc2Vec** and **DistilBERT** features, capturing both document-level and contextualized word-level information.
-- The **sequence** allows the Bi-LSTM to understand temporal dependencies between the features across time steps.
-
-#### 2. **BiLSTM1 Hidden Layer**
-- **First Bi-LSTM Layer (BiLSTM1)**:
-  - This layer consists of two **LSTM cells**, one for the **forward direction** (left to right) and one for the **backward direction** (right to left).
-  - The forward LSTM processes the input from `X(t-1)` to `X(t+1)`, and the backward LSTM processes the input in the reverse order.
-  - The outputs from both LSTMs at each time step are concatenated to form the hidden representation (`h1(t)` and `ĥ1(t)`).
-  - **Bi-LSTM** captures context from both past and future directions, which is especially useful in understanding the semantics of reviews in this context.
+### **2. BiLSTM1 Hidden Layer**
+- The first processing layer is the **BiLSTM1 Hidden Layer**.
+- This layer processes the input words through a **Bidirectional LSTM**.
+  - The **Forward Layer** captures information moving from the beginning of the sentence to the end.
+  - The **Backward Layer** captures information from the end of the sentence to the beginning.
+  - The output from both directions is combined to generate a richer representation of each word, which is represented by vectors \( \overrightarrow{h_1(t)} \) and \( \overleftarrow{h_1(t)} \). Together, they form \( h_1(t) \).
   
-#### 3. **Dropout Layer**
-- **Dropout Layer** is introduced after the first Bi-LSTM hidden layer:
-  - The purpose of dropout is to **prevent overfitting** by randomly deactivating some neurons during training.
-  - This leads to a more generalized model, as the network doesn't rely too heavily on any particular neurons.
+### **3. Attention Mask Layer**
+- After passing through the **BiLSTM1 Layer**, the output at each time step undergoes an **Attention Mask Layer**.
+- The **Attention Mask Layer** is used to focus on important parts of the sequence. This mechanism calculates an **attention weight** for each word representation \( A_n \), indicating the importance of the word in context.
+- The attention mechanism helps the model decide which words are more relevant for the classification task, enhancing feature representation by selectively emphasizing crucial words.
 
-#### 4. **BiLSTM2 Hidden Layer**
-- **Second Bi-LSTM Layer (BiLSTM2)**:
-  - Similar to the first Bi-LSTM layer, this layer has **forward and backward LSTMs** that take the output from the previous layer (after dropout) as input.
-  - By using a second Bi-LSTM layer, the model can better capture more complex temporal dynamics in the sequence data.
-  - The outputs at each time step are denoted as (`h2(t)` and `ĥ2(t)`).
-  - This stacked Bi-LSTM architecture provides the model with a greater capability to model long-term dependencies between the features.
+### **4. BiLSTM2 Hidden Layer**
+- The output after applying the attention weights from the first BiLSTM layer is passed to a second **BiLSTM2 Hidden Layer**.
+  - Again, it utilizes a **Forward and Backward LSTM** to generate enriched representations of words.
+  - The second BiLSTM helps capture more sophisticated dependencies by processing the information that was already filtered by the first layer's attention mechanism.
+  
+### **5. Dropout Layer**
+- After passing through the **BiLSTM2**, the output undergoes a **Dropout Layer**.
+- The dropout mechanism helps prevent overfitting by randomly "dropping out" neurons during the training phase.
+- This improves the generalization capability of the model.
 
-#### 5. **Classification Layer**
-- **Final Classification Layer**:
-  - After the output from the second Bi-LSTM layer, we apply an additional operation (`σ`) which seems to represent a non-linear activation function (like ReLU or Tanh).
-  - This representation is then passed to the **classification layer**, which consists of a **fully connected (dense) layer**.
-  - The dense layer outputs the logits for the two possible classes, **Functional (F)** or **Non-Functional (NF)**.
+### **6. Attention Mask Layer (Second Time)**
+- A second **Attention Mask Layer** is applied at this point.
+- Similar to the first attention layer, this layer assigns a new set of **attention weights** based on the output from the **BiLSTM2 Hidden Layer**.
+- This helps further emphasize important information in the input, refining the focus for classification.
 
-#### 6. **SoftMax Layer**
-- **Softmax Layer**:
-  - The final output is passed through a **softmax layer**.
-  - The softmax function produces a probability distribution over the two classes (F and NF), allowing the network to decide the category for each input.
-  - It provides confidence scores indicating the likelihood of the input belonging to each of the classes.
+### **7. Classification Layer**
+- The final output from the attention mechanism is passed to the **Classification Layer**.
+- This layer combines the outputs and produces a **classification score** using a **SoftMax activation function**.
+- The **SoftMax Layer** outputs a probability distribution over different classes, representing the final classification decision.
 
-### Summary
-- The architecture consists of **two stacked Bi-LSTM layers**. Each Bi-LSTM is made of **forward and backward LSTMs**, allowing the model to capture both past and future dependencies in the data.
-- The **dropout layer** between the two Bi-LSTM layers helps to generalize the model by preventing overfitting.
-- The **final dense classification layer**, followed by the **softmax function**, is used for categorizing the reviews into functional or non-functional categories.
+### **Key Points Summary:**
+- The model takes a **document** and breaks it into **sentences** and **words**.
+- **Words** are processed by **two levels** of **Bidirectional LSTMs (BiLSTM1 and BiLSTM2)**.
+- After each BiLSTM, an **Attention Mask Layer** is applied to focus on important words.
+- **Dropout** is used for regularization between the two BiLSTM layers.
+- The **Classification Layer** at the end applies a **SoftMax function** to predict the final output class.
+  
+### **The Role of Attention Mechanism:**
+- The **attention mechanism** is critical for enabling the model to give more importance to certain words or phrases in the input, allowing it to better understand context, dependencies, and important cues within the text.
+- There are **two levels of attention**—one after each BiLSTM layer—offering progressively refined context representations for improved classification performance.
 
-The design of two Bi-LSTM layers aims to learn complex relationships in the input data by combining both **contextual sequence** information and **global document features**. The **hierarchical nature** of the Bi-LSTM layers is crucial for your model to capture fine-grained details in a hierarchical structure, further reinforced by the combination of embeddings from **Doc2Vec** and **DistilBERT**.
+This architecture is particularly useful for tasks that require nuanced understanding of sequences, such as **text classification**, **sentiment analysis**, or even **named entity recognition**, where different words or phrases contribute differently to the final output. The attention mechanism, combined with the **bidirectional LSTMs**, allows the model to efficiently capture long-term dependencies and determine the most relevant parts of the text for classification.
 
-This architecture diagram illustrates how temporal data (embeddings) is sequentially processed in both directions and how important mechanisms, like dropout and stacking, ensure robust and generalizable feature extraction before classification. It helps build a rich representation of the document, effectively leveraging both word-level and document-level information for classification tasks. 
 
-Let me know if you need more specific details or explanations of any part of this architecture!
+### **Key Points Summary**
+1. **Input Layer** splits the document into sentences and words.
+2. **BiLSTM1 Hidden Layer** processes the words from both directions to get context representations.
+3. **Attention Mask Layer** is applied to BiLSTM1's output to highlight important words.
+5. **BiLSTM2 Hidden Layer** receives the focused context from Attention Mask Layer and processes it in both directions again.
+4. **Dropout Layer** is applied to the output from BiLSTM2 for regularization.
+6. **Attention Mask Layer (Second Time)** is applied to further enhance the attention weights for classification.
+7. **Classification Layer** applies **SoftMax** to provide the final classification result.
+
+### **Difference and Significance of This Sequence:**
+**BiLSTM2** comes **before** the dropout layer, rather than applying dropout after each BiLSTM layer. This adjusted sequence means that **dropout** is now acting on the final representation before applying a second layer of attention, rather than between each BiLSTM step. This might help focus on the overall sequence representation rather than dropping information in intermediate layers.
+- The second **Attention Mask Layer** after the **Dropout Layer** adds more precision by refining context based on a slightly regularized output from **BiLSTM2**.
